@@ -5,7 +5,7 @@ package tutorial;
 
 public class App {
     public String getGreeting() {
-        return "Hello World";
+        return "Goodbye Space";
     }
 
     public static void main(String[] args) {
