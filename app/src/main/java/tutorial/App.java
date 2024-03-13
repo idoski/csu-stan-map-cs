@@ -6,10 +6,6 @@ package tutorial;
 import tutorial.Gui.Gui;
 
 public class App {
-    public String getGreeting() {
-        return "The jakefunction";
-    }
-
     public static void main(String[] args) {
         Gui.startGui();
     }
