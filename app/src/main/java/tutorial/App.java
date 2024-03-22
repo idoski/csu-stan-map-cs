@@ -11,6 +11,8 @@ public class App {
     }
 
     public static void main(String[] args) {
-        Gui.startGui();
+        System.out.println("Starting...");
+        Gui gui = new Gui();
+        Gui.startGui(gui);
     }
 }

@@ -7,40 +7,120 @@ import java.io.File;
 import java.io.IOException;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
+import java.awt.event.MouseEvent;
 
-public class Gui {
+public class Gui extends JPanel implements MouseWheelListener, MouseListener, MouseMotionListener{
+    double zoomFactor = 1;
+    double prevZoomFactor = 1;
+    boolean zoomer;
+    boolean dragger;
+    boolean released;
+    double xOffset = 0;
+    double yOffset = 0;
+    int xDiff;
+    int yDiff;
+    Point startPoint;
+    JFrame frame;
 
-    public static void startGui() {
-
-       JFrame frame = new JFrame("Lets Go");
-       frame.setLayout(null);
-       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-       frame.setBounds(100,200,350,300);
-
-       String image;
-
-       try {
-           image = new File("src/main/java/tutorial/resources/test_image.png").getCanonicalPath();
-       } catch (IOException e) {
-           System.out.print("The file 'resources/test_image.png' is not found, quiting now");
-           return;
-       }
-
-       Container c = frame.getContentPane();
-       JLabel label = new JLabel();
-       label.setIcon(new ImageIcon(image));
-       Dimension size = label.getPreferredSize();
-       label.setBounds(50,30, size.width, size.height);
-
-       c.add(label);
-       frame.setVisible(true);
-
-   }
-
-   public static void zoomImage(Image image) {
+    public Gui() {
+        this.frame = new JFrame("Lets Go");
+        this.frame.setLayout(null);
+        this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.frame.setBounds(100,200,350,300);
+        initComponent();
+    }
+    private void initComponent() {
+        addMouseWheelListener(this);
+        System.out.println("added 1!");
+        addMouseMotionListener(this);
+        System.out.println("added 2!");
+        addMouseListener(this);
+        System.out.println("added 3!");
+    }
 
 
-   }
+    public static void startGui(Gui gui){
+        String image;
+
+        try {
+            image = new File("src/main/java/tutorial/resources/test_image.png").getCanonicalPath();
+        } catch (IOException e) {
+            System.out.print("The file 'resources/test_image.png' is not found, quiting now");
+            return;
+        }
+        Container c = gui.frame.getContentPane();
+        JLabel label = new JLabel();
+        label.setIcon(new ImageIcon(image));
+        Dimension size = label.getPreferredSize();
+        label.setBounds(50,30, size.width, size.height);
+        c.add(label);
+        gui.frame.setVisible(true);
+    }
+
+    public static void zoomImage(JFrame frame, boolean up) {
+        if (up) {
+            System.out.println("Scrolled up!");
+        }
+        else{
+            System.out.println("Scrolled down!");
+        }
+    }
+    @Override
+    public void mouseWheelMoved(MouseWheelEvent e) {
+        zoomer = true;
+
+        //Zoom in
+        if (e.getWheelRotation() < 0) {
+            this.zoomFactor *= 1.1;
+            System.out.println("Scrolled up!");
+            zoomImage(this.frame, true);
+        }
+        //Zoom out
+        if (e.getWheelRotation() > 0) {
+            System.out.println("Scrolled down!");
+            this.zoomFactor /= 1.1;
+            zoomImage(this.frame, false);
+        }
+    }
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        System.out.println("Mouse Moved!");
+    }
+    @Override
+    public void mouseClicked(MouseEvent e) {
+
+    }
+    @Override
+    public void mousePressed(MouseEvent e) {
+        released = false;
+        this.startPoint = MouseInfo.getPointerInfo().getLocation();
+    }
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        released = true;
+    }
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+    @Override
+    public void mouseExited(MouseEvent e) {
+
+    }
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        Point curPoint = e.getLocationOnScreen();
+        xDiff = curPoint.x - startPoint.x;
+        yDiff = curPoint.y - startPoint.y;
+
+        dragger = true;
+
+    }
+
 
 }
 
