@@ -7,7 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class ImageLabel extends JLabel{
-    Image image;
+    Image image = null;
     int width, height;
 
     public void paint(Graphics g) {
@@ -16,7 +16,7 @@ public class ImageLabel extends JLabel{
         x = (this.getWidth() - width) < 0 ? 0 : (this.getWidth() - width);
         y = (this.getHeight() - width) < 0 ? 0 : (this.getHeight() - width);
 
-        g.drawImage(image, x, y, width, height, null);
+        g.drawImage(image, x, y, width, height, this);
     }
 
     public void setDimensions(int width, int height) {
